@@ -18,12 +18,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Built-in apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Third-party apps
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
     
     # Our apps
     'users',
@@ -118,3 +125,50 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+# Django Rest Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    },
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
+# JWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Short-lived access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Long-lived refresh token
+    'ROTATE_REFRESH_TOKENS': True,                   # New refresh token on refresh
+    'BLACKLIST_AFTER_ROTATION': True,                # Invalidate old refresh tokens
+    
+    # 'AUTH_COOKIE': 'access_token',      # Cookie name for access token
+    # 'AUTH_COOKIE_DOMAIN': None,         # Domain for cookie (None for localhost)
+    # 'AUTH_COOKIE_SECURE': True,         # Send cookie only over HTTPS
+    # 'AUTH_COOKIE_HTTP_ONLY': True,      # Prevent JavaScript access
+    # 'AUTH_COOKIE_SAMESITE': 'Lax',      # SameSite policy
+    
+    'UPDATE_LAST_LOGIN': True,                    # Update last login timestamp when refreshing token
+    'ALGORITHM': 'HS256',                            # Encryption algorithm
+    'SIGNING_KEY': config('SECRET_KEY'),                       # Django secret key
+    
+    
+    'USER_ID_FIELD': 'username',   # Use username as the identifier in JWT payload
+    'USER_ID_CLAIM': 'user_id',  # Claim name in JWT payload
+}
