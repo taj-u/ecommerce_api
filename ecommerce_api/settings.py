@@ -61,8 +61,12 @@ WSGI_APPLICATION = 'ecommerce_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': config('POSTGRES_DB_NAME'),
+    'USER': config('POSTGRES_DB_USER'),
+    'PASSWORD': config('POSTGRES_DB_PASSWORD'),
+    'HOST': 'localhost',
+    'PORT': '5432',
     }
 }
 
