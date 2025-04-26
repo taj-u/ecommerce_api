@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.conf import get_user_model
+from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, RegisterSerializer
 from .permissions import IsAdmin
 

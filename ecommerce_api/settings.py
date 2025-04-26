@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from decouple import config  # to get configuration/credentials securedly
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -153,7 +154,7 @@ REST_FRAMEWORK = {
 
 # JWT settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Short-lived access token
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),  # Short-lived access token
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Long-lived refresh token
     'ROTATE_REFRESH_TOKENS': True,                   # New refresh token on refresh
     'BLACKLIST_AFTER_ROTATION': True,                # Invalidate old refresh tokens
