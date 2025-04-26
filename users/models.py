@@ -22,9 +22,9 @@ class User(AbstractUser):
     def is_admin(self):
         return self.role == self.Role.ADMIN
 
-    
+    @property
     def is_vendor(self):
         return self.role == self.Role.VENDOR
-        
+    @property
     def is_customer(self):
         return self.role == self.Role.CUSTOMER
