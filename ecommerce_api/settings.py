@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from decouple import config  # to get configuration/credentials securedly
@@ -32,6 +33,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'django_redis',
     
     # Our apps
     'users',
@@ -174,4 +176,45 @@ SIMPLE_JWT = {
     
     'USER_ID_FIELD': 'username',   # Use username as the identifier in JWT payload
     'USER_ID_CLAIM': 'user_id',  # Claim name in JWT payload
+}
+
+
+# Cache settings
+# REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/1')
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': REDIS_URL,
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#             'CONNECTION_POOL_KWARGS': {
+#                 'max_connections': int(os.getenv('REDIS_MAX_CONNECTIONS', 50)),
+#                 'retry_on_timeout': True,
+#                 'socket_keepalive': True,
+#                 'socket_keepalive_options': {},
+#             },
+#             'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+#             'IGNORE_EXCEPTIONS': True,
+#         },
+#     }
+# }
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'CONNECTION_POOL_KWARGS': {
+                'max_connections':  50,
+                'retry_on_timeout': True,
+                'socket_keepalive': True,
+                'socket_keepalive_options': {},
+            },
+            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+            'IGNORE_EXCEPTIONS': True,
+        },
+    }
 }
